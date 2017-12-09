@@ -1,0 +1,33 @@
+.markdown {
+    background: white;
+    height: 110%;
+    left: -5%;
+    margin: 0 auto;
+    padding-top: 50px;
+    position: relative;
+    width: 110%;
+
+    .container {
+        height: auto;
+        margin: 0 auto;
+        width: 800px;
+    }
+    
+    .markdownInput {
+        height: 500px;
+        width: 49%;
+    }
+    
+    .inline {
+        display: inline-block;
+    }
+    
+    .mardownOutput {
+        border: 1px solid rgb(12, 0, 0);
+        height: 504px !important;
+        position: absolute;
+        top: 50px;
+        width: 392px;
+    }
+
+}

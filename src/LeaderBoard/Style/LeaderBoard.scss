@@ -1,0 +1,40 @@
+.leaderboard {
+    background: url("http://www.hdwallpaperspulse.com/wp-content/uploads/2016/03/10/black-free-background.png");
+    left: -5%;
+    margin: 0 auto;
+    padding-top: 50px;
+    position: relative;
+    width: 110%;
+    
+    #top {
+        background-color: green;
+    }
+    
+    h3 {
+        padding-right: 20px;
+    }
+    
+    table {
+        border-collapse: collapse;
+        box-shadow: 1px 1px 5px 3px rgba(0,0,0,0.75);
+        margin: 0 auto;
+        width: 80%;
+    }
+    
+    table, th, td {
+        border: 1px solid black;
+        text-align: center;
+    }
+    
+    th, td {
+        padding: 15px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: rgb(170, 163, 163)
+    }
+    
+    tr:nth-child(odd) {
+        background-color: white;
+    }
+}

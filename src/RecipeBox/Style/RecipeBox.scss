@@ -1,0 +1,39 @@
+
+.recipebox {
+    background: rgb(204, 204, 240);
+    height: 1000px;
+    left: -5%;
+    margin: 0 auto;
+    position: relative;
+    width: 110%;
+
+    .modal-dialog {
+        background: rgba(13, 134, 98, 0.5);
+        height: 250px;
+        margin: 0 auto;
+        position: relative;
+        top: 15%;
+        width: 400px;
+    }
+
+    .modal-footer {
+        position: absolute;
+        bottom: 5%;
+        right: 5%;
+    }
+
+    .container {
+        margin: 0 auto;
+        padding-top: 50px;
+        width: 300px;
+    }
+
+    button {
+        margin-left: 50px;
+    }
+
+    form {
+        margin: 0 auto;
+        width:300px;
+    }
+}
