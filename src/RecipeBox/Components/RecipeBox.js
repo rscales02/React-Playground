@@ -7,38 +7,64 @@ require('../Style/RecipeBox.scss')
 class RecipeBox extends React.Component {
     constructor(props) {
         super(props);
+
+        this.toggleModal = this.toggleModal.bind(this)
+        this.newRecipe = this.newRecipe.bind(this)
+
         this.state = {
-            open: false,
+            modalOpen: false,
+            ingrOpen: false,
             recipes: [
                 {
                     name: "Vodka Tonic",
-                    ingredients: "vodka tonic",
+                    ingredients: ["vodka", "tonic"],
+                    isOpen: false
                 },
                 {
                     name: "Gin & Tonic",
-                    ingredients: "gin tonic"
+                    ingredients: ["gin", "tonic"],
+                    isOpen: false
                 }
             ]
         }
     }
 
-    renderRecipes() {
-        const recipeList = this.state.recipes.map(
-            (item, index) => <Recipe id={item.name} ingredients={item.ingredients} key={index} />
-        )
-        
+    renderRecipes(index) {
+        const recipeList = this.state.recipes.map((item, index) => {
+            return (
+                <Recipe
+                    id={item.name}
+                    ingredients={item.ingredients}
+                    isOpen={item.isOpen}
+                    key={index}
+                    onClick={() => this.handleRecipeClick(index)}
+                />
+            )
+        })
         return recipeList
     }
 
-    getModal() {
+    handleRecipeClick(index) {
+        var recipeOpen = this.state.recipes;
+        recipeOpen[index].isOpen = !recipeOpen[index].isOpen
+
         this.setState({
-            open: true,
+            recipes: recipeOpen
         })
     }
 
-    handleClick() {
+    newRecipe(data) {
+        var recipes = this.state.recipes
+        recipes.push(data)
         this.setState({
-            open: false,
+            recipes,
+        })
+        this.toggleModal()
+    }
+
+    toggleModal() {
+        this.setState({
+            modalOpen: this.state.modalOpen ? false : true
         })
     }
 
@@ -46,12 +72,13 @@ class RecipeBox extends React.Component {
         return (
             <div className="recipebox">
                 <Modal
-                    open={this.state.open}
-                    onClick={this.handleClick.bind(this)}
+                    open={this.state.modalOpen}
+                    onSubmit={this.newRecipe}
+                    onClose={this.toggleModal}
                 />
                 <div className="container">
                     {this.renderRecipes()}
-                    <button onClick={this.getModal.bind(this)} >Add New</button>
+                    <button onClick={this.toggleModal} >Add New</button>
                 </div>
             </div>
         )

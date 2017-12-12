@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 
 require('../Style/Recipe.scss')
 
@@ -10,9 +11,14 @@ class Recipe extends React.Component {
     renderIngredients() {
         let ingredients = this.props.ingredients
 
-        ingredients = ingredients.split(" ")
-        ingredients = ingredients.map((item, index) => <div key={index}>{item}</div> )
-
+        ingredients = ingredients.map((item, index) => {
+            return (
+                <div
+                    key={index} >
+                    {item}
+                </div >
+            )
+        })
         return ingredients
     }
 
@@ -20,8 +26,13 @@ class Recipe extends React.Component {
 
         return (
             <div className="recipe">
-                <div className="id">{this.props.id}</div>
-                <div className="ingredients">{this.renderIngredients()}</div>
+                <div className="id">
+                    <a href="#" onClick={this.props.onClick} >{this.props.id}</a>
+                </div>
+                <div className={classNames({ "open": this.props.isOpen }, "ingredients")} >
+                {this.renderIngredients()}
+                <button>edit</button>
+                </div>
             </div>
         )
     }
