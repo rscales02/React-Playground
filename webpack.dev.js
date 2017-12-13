@@ -3,8 +3,10 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-module.exports = merge(common, {
-  devtool: 'inline-source-map',
+module.exports = merge.strategy({
+  entry: 'prepend',
+})(common, {
+  devtool: 'eval',
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
@@ -14,6 +16,9 @@ module.exports = merge(common, {
     progress: true,
     historyApiFallback: true,
   },
+  entry: [
+    'react-hot-loader/patch',
+  ],
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),

@@ -1,52 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Markdown from './Markdown/Markdown';
-import LeaderBoard from './LeaderBoard/Components/LeaderBoard'
-import RecipeBox from './RecipeBox/Components/RecipeBox'
+import Switcher from './Switcher/Switcher'
+import { AppContainer } from 'react-hot-loader'
 
-class Switcher extends React.Component {
-  constructor(props){
-      super(props);
-      this.state = {
-        id: 'RecipeBox'
-      }
-
-      this.handleSwitch = this.handleSwitch.bind(this)
-  }
-
-  handleSwitch(e) {
-      this.setState({
-        id: e.target.id
-      });
-      
-      
-  }
-
-  render() {
-    let pageMap = {
-      "LeaderBoard": <LeaderBoard/>,
-      "Markdown": <Markdown />,
-      "RecipeBox": <RecipeBox />
-    }
-    let selectedComponent = pageMap[this.state.id]
-      return (
-          <div>
-              <button href="#" id="LeaderBoard" onClick={this.handleSwitch}>Leader Board</button>
-              <button href="#" id="Markdown" onClick={this.handleSwitch}>Markdown</button>
-              <button href="#" id="RecipeBox" onClick={this.handleSwitch}>Recipe Box</button>
-              <div id="mount">{
-                selectedComponent
-              }</div>
-          </div>
-
-          
-      )
-  }
-}
- 
-document.addEventListener('DOMContentLoaded', function() {
+const render = Component => {
   ReactDOM.render(
-    React.createElement(Switcher),
-    document.getElementById('mount')
-  );
-});
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById('mount'),
+  )
+}
+
+render(Switcher)
+
+// Webpack Hot Module Replacement API
+if (module.hot) {
+  module.hot.accept('./Switcher/Switcher', () => render(require('./Switcher/Switcher').default));
+}
