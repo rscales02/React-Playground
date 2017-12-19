@@ -12,7 +12,7 @@ export default class Life extends React.Component {
         </div>
         {/* Board */}
         <div>
-          <Board numSquares={3} />
+          <Board numSquares={100} />
         </div>
       </div>
     )

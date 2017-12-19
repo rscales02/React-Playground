@@ -1,0 +1,11 @@
+.board {
+  border: 1px solid salmon;
+  border-collapse: collapse;
+  display: flex;
+  flex-wrap: wrap;
+  height: 275px;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 275px;
+}

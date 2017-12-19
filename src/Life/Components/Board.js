@@ -1,25 +1,36 @@
 import React from 'react'
 import Square from './Square'
+import Timer from './Timer'
+
+require('../Style/Board.scss')
 
 export default class Board extends React.Component {
   constructor(props) {
     super(props)
+    this.onTimerTick = this.onTimerTick.bind(this)
+
+    this.state = {
+      generation: null
+    }
   }
 
-  renderSquares(num) {
-    let array = [...Array(num).keys()]
-    console.log(array)
-    array.map((item, index) => {
-      return <Square id={index} />
+  onTimerTick(gen) {
+    this.setState({
+      generation: gen
     })
   }
 
-  render() {
-    console.log(this.array)
-    return (
-      <div className="board">
+  
 
-        {this.renderSquares(this.props.numSquares)}
+  render() {
+    return (
+      <div>
+        <Timer onTick={this.onTimerTick} />
+        <div className="board">
+          {[...Array(this.props.numSquares).keys()].map((item, index) => {
+            return <Square key={index} />
+          })}
+        </div>
       </div>
     )
   }

@@ -3,7 +3,7 @@ import Recipe from './Recipe'
 import Modal from './Modal'
 import InputForm from './InputForm'
 import TextArea from './TextArea'
-import Button from './Button'
+import Button from '../../Universal-Components/Components/Button'
 
 
 require('../Style/RecipeBox.scss')
