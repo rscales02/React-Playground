@@ -13,14 +13,16 @@ class RecipeBox extends React.Component {
         super(props);
 
         this.toggleModal = this.toggleModal.bind(this)
-        this.newRecipe = this.newRecipe.bind(this)
+        this.addNewRecipe = this.addNewRecipe.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.onSubmitClick = this.onSubmitClick.bind(this)
         this.onEdit = this.onEdit.bind(this)
+        this.newRecipe = this.newRecipe.bind(this)
+        this.toDelete = this.toDelete.bind(this)
 
         this.state = {
             modalOpen: false,
-            ingrOpen: false,
+            addingNew: true,
             inputName: "",
             inputText: "",
             recipes: [
@@ -44,15 +46,7 @@ class RecipeBox extends React.Component {
         })
     }
 
-    handleRecipeClick(index) {
-        var recipeOpen = this.state.recipes;
-        recipeOpen[index].isOpen = !recipeOpen[index].isOpen
-        this.setState({
-            recipes: recipeOpen
-        })
-    }
-
-    newRecipe(data) {
+    addNewRecipe(data) {
         var recipes = this.state.recipes
         recipes.push(data)
         this.setState({
@@ -61,55 +55,81 @@ class RecipeBox extends React.Component {
         this.toggleModal()
     }
 
-    onEdit(name, text) {
-        let newText = text.join(" ")
-
+    newRecipe() {
         this.setState({
-            inputName: name,
-            inputText: newText
+            addingNew: true
         })
         this.toggleModal()
     }
 
-    onSubmitClick() {
-        if (name && list) {
-            let name = this.state.name
-            let list = []
-            let input = this.state.text
+    onEdit(name) {
+        let index;
 
-            input = input.split(" ")
-
-            for (let i = 0; i < input.length; i++) {
-                list.push(input[i])
+        for (let i = 0; i < this.state.recipes.length; i++) {
+            if (this.state.recipes[i].name == name) {
+                index = i
             }
+        }
+        let newText = this.state.recipes[index].text
+        newText = newText.join(" ")
+
+        this.setState({
+            inputName: name,
+            inputText: newText,
+            addingNew: false,
+            index
+        })
+        this.toggleModal()
+    }
 
 
+    onSubmitClick() {
+        let index = this.state.index
+        let name = this.state.inputName
+        let input = this.state.inputText
+        let list = input.split(" ")
+        let recipes = this.state.recipes
+
+        if (name && list && this.state.addingNew) {
             let data = {
                 name,
                 text: list,
                 isOpen: false
             }
-            this.newRecipe(data)
-            console.log(data)
+            this.addNewRecipe(data)
+            this.reset()
+        } else {
+            recipes[index].name = name
+            recipes[index].text = list
+            this.setState({
+                recipes
+            })
+            this.reset()
+            this.toggleModal()
         }
     }
 
-    renderRecipes(index) {
-        const recipeList = this.state.recipes.map((item, index) => {
-            let id = item.name
-            let ingredients = item.text
-            return (
-                <Recipe
-                    id={id}
-                    ingredients={ingredients}
-                    isOpen={item.isOpen}
-                    key={index}
-                    onClick={() => this.handleRecipeClick(index)}
-                    onEdit={this.onEdit}
-                />
-            )
+    reset() {
+        this.setState({
+            inputName: "",
+            inputText: ""
         })
-        return recipeList
+    }
+
+    toDelete(name) {
+        let index;
+
+        for (let i = 0; i < this.state.recipes.length; i++) {
+            if (this.state.recipes[i].name == name) {
+                index = i
+            }
+        }
+        let recipes = this.state.recipes
+        recipes.splice(index, index + 1)
+
+        this.setState({
+            recipes
+        })
     }
 
     toggleModal() {
@@ -125,27 +145,37 @@ class RecipeBox extends React.Component {
                     open={this.state.modalOpen}
                     onClose={this.toggleModal}
                     title="New Recipe"
-                    name={
+                >
+                    <form>
                         <InputForm
                             onChange={this.handleChange}
                             label="Name:"
-                            id="name"
-                            defaultValue={this.state.inputName}
+                            id="inputName"
+                            value={this.state.inputName}
                         />
-                    }
-                    list={
                         <TextArea
                             label="Ingredients:"
-                            id="text"
+                            id="inputText"
                             onChange={this.handleChange}
-                            defaultValue={this.state.inputText}
+                            value={this.state.inputText}
                         />
-                    }
-                    button={<Button onClick={this.onSubmitClick} id="Submit" />}
-                />
+                        <Button onClick={this.onSubmitClick} id="Submit" />
+                    </form>
+                </Modal>
                 <div className="container">
-                    {this.renderRecipes()}
-                    <Button onClick={this.toggleModal} id="Add New" />
+                    {this.state.recipes.map((item, index) => {
+                        return (
+                            <Recipe
+                                key={index}
+                                ingredients={item.text}
+                                isOpen={item.isOpen}
+                                name={item.name}
+                                onEdit={this.onEdit}
+                                toDelete={this.toDelete}
+                            />
+                        )
+                    })}
+                    <Button onClick={this.newRecipe} id={"Add New"} />
                 </div>
             </div>
         )
@@ -153,3 +183,9 @@ class RecipeBox extends React.Component {
 }
 
 export default RecipeBox
+
+//recipe box is only an app container, this is not needed as it is contained in Switcher
+//the only "necessary" component is a list, with lists embeded. (i.e a list of 
+// ingredients... list-ception!!!)... The modal just needs to be controlled by the parent list
+// of recipes.  Parent list holds state of the recipe catalog, renders modal, and calls each 
+//new list 

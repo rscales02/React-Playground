@@ -8,39 +8,45 @@ class Recipe extends React.Component {
     constructor(props) {
         super(props)
         this.openEdit = this.openEdit.bind(this)
+        this.toggleOpen = this.toggleOpen.bind(this)
+        this.toDelete = this.toDelete.bind(this)
+
+        this.state = {
+            isOpen: this.props.isOpen
+        }
     }
 
-    openEdit(e) {
-        let name = this.props.id
+    toDelete() {
+        let name = this.props.name
+        this.props.toDelete(name)
+    }
+
+    openEdit() {
+        let name = this.props.name
         let text = this.props.ingredients
 
-        this.props.onEdit(name, text)
+
+        this.props.onEdit(name)
     }
 
-    renderIngredients() {
-        let ingredients = this.props.ingredients
-
-        ingredients = ingredients.map((item, index) => {
-            return (
-                <div
-                    key={index} >
-                    {item}
-                </div >
-            )
+    toggleOpen() {
+        this.setState({
+            isOpen: this.state.isOpen ? false : true
         })
-        return ingredients
     }
 
     render() {
-
         return (
             <div className="recipe">
                 <div className="id">
-                    <a href="#" onClick={this.props.onClick} >{this.props.id}</a>
+                    <a href="#" onClick={this.toggleOpen} >{this.props.name}</a>
                 </div>
-                <div className={classNames({ "open": this.props.isOpen }, "ingredients")} >
-                    {this.renderIngredients()}
+                <div className={classNames({ "open": this.state.isOpen }, "ingredients")} >
+                    {this.props.ingredients.map((item, index) => {
+                        return <div key={index}>{item}</div>
+                    })}
                     <Button onClick={this.openEdit} id="Edit" />
+                    <Button onClick={this.toDelete} id="Delete" />
                 </div>
             </div>
         )

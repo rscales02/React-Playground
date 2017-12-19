@@ -4,14 +4,23 @@ export default class TextArea extends React.Component {
     constructor(props) {
         super(props)
 
-        this.textChange = this.textChange.bind(this)
+        this.valueChange = this.valueChange.bind(this)
 
         this.state = {
-            text: this.props.text || []
+            value: this.props.value || []
         }
     }
 
-    textChange(e) {
+    componentWillReceiveProps(nextProps) {
+        let normalizedValue = (nextProps.value || "")
+        if (this.state.value != normalizedValue) {
+            this.setState({
+                value: normalizedValue
+            })
+        }
+    }
+
+    valueChange(e) {
         let input = e.target.value
 
         this.setState({
@@ -27,7 +36,7 @@ export default class TextArea extends React.Component {
                 <label>{this.props.label}</label>
                 <textarea id={this.props.id}
                     value={this.state.value}
-                    onChange={this.textChange} />
+                    onChange={this.valueChange} />
             </p>
         )
     }

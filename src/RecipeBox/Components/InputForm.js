@@ -9,11 +9,11 @@ export default class InputForm extends React.Component {
         }
     }
 
-    willReceiveProps(newProps) {
-        if (this.props != newProps) {
-            console.log(newProps)
+    componentWillReceiveProps(nextProps) {
+        let normalizedValue = (nextProps.value || "")
+        if (this.state.value != normalizedValue) {
             this.setState({
-                defaultValue: this.props.defaultValue
+                value: normalizedValue
             })
         }
     }
@@ -35,7 +35,6 @@ export default class InputForm extends React.Component {
                     id={this.props.id}
                     value={this.state.value}
                     onChange={this.handleChange.bind(this)}
-                    defaultValue={this.state.defaultValue}
                 />
             </p>
         )

@@ -1,5 +1,7 @@
 import React from 'react'
 
+require('../Style/Button.scss')
+
 export default class Button extends React.Component {
 
     render() {

@@ -29,10 +29,7 @@ class Modal extends React.Component {
                         {this.props.title}
                     </div>
                     <div className="modal-body">
-                        <form>
-                            {this.props.name}
-                            {this.props.list}
-                        </form>
+                        {this.props.children}
                     </div>
                     <div className="modal-footer">
                         {this.props.button}
