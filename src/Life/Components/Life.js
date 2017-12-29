@@ -6,14 +6,8 @@ export default class Life extends React.Component {
   render() {
     return (
       <div className="life">
-        {/* score counter */}
-        <div>
-
-        </div>
         {/* Board */}
-        <div>
-          <Board numSquares={100} />
-        </div>
+        <Board numSquares={2500} />
       </div>
     )
   }

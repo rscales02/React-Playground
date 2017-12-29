@@ -1,16 +1,16 @@
 import React from 'react'
 import Markdown from '../Markdown/Markdown';
 import LeaderBoard from '../LeaderBoard/Components/LeaderBoard'
-import RecipeBox from '../RecipeBox/Components/RecipeBox'
+import RecipeBoxApp from '../RecipeBox/Components/RecipeBoxApp'
 import Life from '../Life/Components/Life'
+import AppContainer from '../Dungeons-and-Dorks/Components/AppContainer'
 
 export default class Switcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 'Life'
+            id: 'RecipeBox'
         }
-
         this.handleSwitch = this.handleSwitch.bind(this)
     }
 
@@ -18,16 +18,15 @@ export default class Switcher extends React.Component {
         this.setState({
             id: e.target.id
         });
-
-
     }
 
     render() {
         let pageMap = {
             "LeaderBoard": <LeaderBoard />,
             "Markdown": <Markdown />,
-            "RecipeBox": <RecipeBox />,
-            "Life": <Life />
+            "RecipeBox": <RecipeBoxApp />,
+            "Life": <Life />,
+            "Dungeon": <AppContainer />
         }
         let selectedComponent = pageMap[this.state.id]
         return (
@@ -36,6 +35,7 @@ export default class Switcher extends React.Component {
                 <button href="#" id="Markdown" onClick={this.handleSwitch}>Markdown</button>
                 <button href="#" id="RecipeBox" onClick={this.handleSwitch}>Recipe Box</button>
                 <button href="#" id="Life" onClick={this.handleSwitch}>Life</button>
+                <button href="#" id="Dungeon" onClick={this.handleSwitch}>Dungeon</button>
                 <div id="mount">{
                     selectedComponent
                 }</div>

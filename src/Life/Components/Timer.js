@@ -14,26 +14,27 @@ export default class Timer extends React.Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000)
+    this.interval = setTimeout(() => this.tick(), 10)
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    clearTimeout(this.interval)
   }
 
   pause() {
-    clearInterval(this.interval)
+    clearTimeout(this.interval)
     this.setState({ isRunning: false })
   }
 
   start() {
     if (!this.state.isRunning) {
-      this.interval = setInterval(() => this.tick(), 1000)
+      this.interval = setTimeout(() => this.tick(), 10)
       this.setState({ isRunning: true })
     }
   }
 
   tick() {
+    this.componentDidMount()
     this.setState({ generation: this.state.generation + 1 })
     this.props.onTick(this.state.generation)
   }
@@ -44,6 +45,7 @@ export default class Timer extends React.Component {
         Generations: {this.state.generation}
         <Button id="Start" onClick={this.start} />
         <Button id="Pause" onClick={this.pause} />
+        {this.props.children}
       </div>
     )
   }

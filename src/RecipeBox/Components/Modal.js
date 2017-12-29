@@ -1,43 +1,22 @@
 import React from 'react'
-
-
-
 require('../Style/Modal.scss')
 
-class Modal extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = this.defaultState = {
-            isOpen: false
-        }
-    }
-
-    isOpen() {
-        return this.props.open ? "open" : ""
-    }
-
-    stopPropagation(e) {
-        e.stopPropagation()
-    }
-
-    render() {
-        return (
-            <div id="Modal" className={this.isOpen() + " modal"} onClick={this.props.onClose}>
-                <div className="modal-dialog" onClick={this.stopPropagation}>
-                    <div className="modal-header">
-                        {this.props.title}
-                    </div>
-                    <div className="modal-body">
-                        {this.props.children}
-                    </div>
-                    <div className="modal-footer">
-                        {this.props.button}
-                    </div>
+const Modal = ({ title, children, button, onClose }) => {
+    return (
+        <div id="Modal" className="open modal" onClick={onClose} >
+            <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                    {title}
+                </div>
+                <div className="modal-body">
+                    {children}
+                </div>
+                <div className="modal-footer">
+                    {button}
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Modal

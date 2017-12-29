@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TextArea = ({ label, id, value, onChange }) => {
+const Input = ({ label, id, value, onChange }) => {
     const valueChange = (e) => {
         let input = e.target.value
         onChange(id, input)
@@ -9,11 +9,13 @@ const TextArea = ({ label, id, value, onChange }) => {
     return (
         <p>
             <label>{label}</label>
-            <textarea id={id}
+            <input
+                id={id}
                 value={value}
-                onChange={this.valueChange} />
+                onChange={valueChange}
+            />
         </p>
     )
 }
 
-export default TextArea
+export default Input
