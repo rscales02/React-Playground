@@ -5,21 +5,14 @@ import recipeReducer from '../Reducers'
 import RecipeBoxContainer from '../Containers/RecipeBoxContainer'
 import { loadState, saveState } from '../../Universal-Components/Components/LocalStorage'
 
+let store = createStore(recipeReducer)
 
-export default class RecipeBoxApp extends React.Component {
-  constructor(props) {
-    super(props)
-
-    const persistedState = loadState()
-    this.store = createStore(recipeReducer, persistedState)
-  }
-
-
-  render() {
-    return (
-      <Provider store={this.store} >
-        <RecipeBoxContainer />
-      </Provider>
-    )
-  }
+const RecipeBoxApp = () => {
+  return (
+    <Provider store={store} >
+      <RecipeBoxContainer />
+    </Provider>
+  )
 }
+
+export default RecipeBoxApp

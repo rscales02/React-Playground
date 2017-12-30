@@ -10,7 +10,6 @@ export const addRecipe = (name, text) => {
 }
 
 export const toggleRecipe = (id) => {
-  console.log(id)
   return {
     type: 'TOGGLE_RECIPE',
     id,
@@ -21,6 +20,12 @@ export const deleteRecipe = (id) => {
   return {
     type: 'DELETE_RECIPE',
     id
+  }
+}
+
+export const toggleModal = (showModal) => {
+  return {
+    type: 'TOGGLE_MODAL',
   }
 }
 

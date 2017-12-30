@@ -3,14 +3,15 @@ import * as actions from '../Actions'
 import RecipeBox from '../Components/RecipeBox'
 
 const mapStateToProps = (state) => ({
+  modal: state.modal,
   recipes: state.recipes,
   editId: state.visibility.edit
 })
 
 const mapDispatchToProps = ({
   onToggleEdit: actions.toggleRecipeEdit,
-
-  onToggle: actions.toggleRecipe,
+  onToggleModal: actions.toggleModal,
+  onToggleList: actions.toggleRecipe,
   onAdd: actions.addRecipe,
   onDelete: actions.deleteRecipe,
   onEdit: actions.editRecipe

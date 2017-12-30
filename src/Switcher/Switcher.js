@@ -4,6 +4,7 @@ import LeaderBoard from '../LeaderBoard/Components/LeaderBoard'
 import RecipeBoxApp from '../RecipeBox/Components/RecipeBoxApp'
 import Life from '../Life/Components/Life'
 import AppContainer from '../Dungeons-and-Dorks/Components/AppContainer'
+import Example from '../Example/Example'
 
 export default class Switcher extends React.Component {
     constructor(props) {
@@ -26,7 +27,8 @@ export default class Switcher extends React.Component {
             "Markdown": <Markdown />,
             "RecipeBox": <RecipeBoxApp />,
             "Life": <Life />,
-            "Dungeon": <AppContainer />
+            "Dungeon": <AppContainer />,
+            "Example": <Example />
         }
         let selectedComponent = pageMap[this.state.id]
         return (
@@ -36,6 +38,7 @@ export default class Switcher extends React.Component {
                 <button href="#" id="RecipeBox" onClick={this.handleSwitch}>Recipe Box</button>
                 <button href="#" id="Life" onClick={this.handleSwitch}>Life</button>
                 <button href="#" id="Dungeon" onClick={this.handleSwitch}>Dungeon</button>
+                <button href="#" id="Example" onClick={this.handleSwitch}>Example</button>
                 <div id="mount">{
                     selectedComponent
                 }</div>
