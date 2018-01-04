@@ -1,21 +1,16 @@
 .recipe {
-    background: green;
+  background: green;
+  height: auto;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  width: 400px;
+
+  .ingredients {
+    background: #ffffff;
     height: auto;
     margin: 0 auto;
-    padding-bottom: 10px;
-    width: 400px;
-
-    .ingredients {
-        background: #ffffff;
-        height: auto;
-        margin: 0 auto;
-        position: relative;
-        opacity: 0;
-        transition: opacity 1s;
-        width: 300px;
-
-        &.open {
-            opacity: 1;
-        }
-    }
+    position: relative;
+    opacity: 1;
+    width: 300px;
+  }
 }

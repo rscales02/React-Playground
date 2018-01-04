@@ -1,23 +1,27 @@
 import React from 'react'
-import classNames from 'classnames'
+import * as actions from '../Actions'
 import Button from '../../Universal-Components/Components/Button'
 
 require('../Style/Recipe.scss')
 
-const Recipe = ({ isOpen, name, text, onToggleOpen, onToggleEdit, onDelete }) => {
+const Recipe = ({ id, isOpen, name, onDelete, text, onToggleEdit, toggleList, toggleModal }) => {
+  const onEditClick = (id) => {
+    onToggleEdit(id),
+    toggleModal()
+  }
   let textMap = isOpen
     ? <div>
       {text.map((item, index) => <div key={index}>{item}</div>)}
-      <Button onClick={() => onToggleEdit(id)} id="Edit" />
+      <Button onClick={() => onEditClick(id)} id="Edit" />
       <Button onClick={() => onDelete(id)} id="Delete" />
     </div>
-    : 'empty'
+    : null
   return (
     <div className="recipe">
       <div className="id">
-        <a href="#" onClick={() => onToggleOpen(name)} >{name}</a>
+        <a href="#" onClick={() => toggleList(id)} >{name || "???"}</a>
       </div>
-      <div className={classNames({ "open": isOpen }, "ingredients")} >
+      <div className="ingredients" >
         {textMap}
       </div>
     </div >

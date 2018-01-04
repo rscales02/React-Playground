@@ -1,18 +1,31 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import recipeReducer from '../Reducers'
-import RecipeBoxContainer from '../Containers/RecipeBoxContainer'
-import { loadState, saveState } from '../../Universal-Components/Components/LocalStorage'
+import React from "react";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import recipeReducer from "../Reducers";
+import RecipeBoxContainer from "../Containers/RecipeBoxContainer";
+import {
+  loadState,
+  saveState
+} from "../../Universal-Components/Components/LocalStorage";
 
-let store = createStore(recipeReducer)
+const persistedState = loadState();
+
+let store = createStore(
+  recipeReducer,
+  { recipes: persistedState },
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+store.subscribe(() => {
+  saveState(store.getState().recipes);
+});
 
 const RecipeBoxApp = () => {
   return (
-    <Provider store={store} >
+    <Provider store={store}>
       <RecipeBoxContainer />
     </Provider>
-  )
-}
+  );
+};
 
-export default RecipeBoxApp
+export default RecipeBoxApp;
