@@ -10,7 +10,7 @@ export default class Switcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 'RecipeBox'
+            id: 'Dungeon'
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
@@ -23,12 +23,12 @@ export default class Switcher extends React.Component {
 
     render() {
         let pageMap = {
-            "LeaderBoard": <LeaderBoard />,
-            "Markdown": <Markdown />,
-            "RecipeBox": <RecipeBoxApp />,
-            "Life": <Life />,
+            // "LeaderBoard": <LeaderBoard />,
+            // "Markdown": <Markdown />,
+            // "RecipeBox": <RecipeBoxApp />,
+            // "Life": <Life />,
             "Dungeon": <AppContainer />,
-            "Example": <Example />
+            /* "Example": <Example /> */
         }
         let selectedComponent = pageMap[this.state.id]
         return (
@@ -39,9 +39,7 @@ export default class Switcher extends React.Component {
                 <button href="#" id="Life" onClick={this.handleSwitch}>Life</button>
                 <button href="#" id="Dungeon" onClick={this.handleSwitch}>Dungeon</button>
                 <button href="#" id="Example" onClick={this.handleSwitch}>Example</button>
-                <div id="mount">{
-                    selectedComponent
-                }</div>
+                <div id="mount">{selectedComponent}</div>
             </div>
         )
     }

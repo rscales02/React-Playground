@@ -6,7 +6,6 @@ const recipes = (state = [], action) => {
       return [
         ...state,
         {
-          editMode: false,
           id: action.id,
           name: action.name,
           isOpen: false,

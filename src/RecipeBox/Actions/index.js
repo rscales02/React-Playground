@@ -25,12 +25,6 @@ export const editRecipe = (id, name, text) => {
   }
 }
 
-export const toggleModal = () => {
-  return {
-    type: 'TOGGLE_MODAL',
-  }
-}
-
 export const toggleRecipe = (id) => {
   return {
     type: 'TOGGLE_RECIPE',
@@ -38,9 +32,9 @@ export const toggleRecipe = (id) => {
   }
 }
 
-export const toggleRecipeEdit = (id) => {
+export const toggleModal = () => {
   return {
-    type: 'TOGGLE_RECIPE_EDIT',
-    id,
+    type: 'TOGGLE_MODAL',
   }
 }
+

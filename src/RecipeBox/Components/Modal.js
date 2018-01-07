@@ -3,7 +3,7 @@ require('../Style/Modal.scss')
 
 const Modal = ({ title, children, button, onClose }) => {
   return (
-    <div id="Modal" className="open modal" onClick={onClose} >
+    <div id="Modal" className="modal" onClick={onClose} >
       <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           {title}

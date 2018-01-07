@@ -1,5 +1,5 @@
 import React from "react";
-import Recipe from "./Recipe";
+import RecipeContainer from "./Recipe";
 import Modal from "./Modal";
 import Input from "./Input";
 import TextArea from "./TextArea";
@@ -11,44 +11,24 @@ class RecipeBox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.editRecipe = this.editRecipe.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.modalEditToggle = this.modalEditToggle.bind(this)
-    this.onSubmitClick = this.onSubmitClick.bind(this);
-    this.reset = this.reset.bind(this)
-
     this.state = {
-      editmode: false,
-      id: undefined,
+      editmode: undefined,
       inputText: undefined,
       inputName: undefined
     };
   }
 
-  componentWillReceiveProps() {
-    let inputName, inputText
-    this.props.recipes.map(recipe => {
-        if (recipe.editMode === true) {
-          inputName = recipe.name
-          inputText = recipe.text
-          this.setState({
-            editmode: true,
-            inputName,
-            inputText
-          }, () => {console.log(this.state.inputName)});
-        } 
+  editRecipe = (id) => {
+    let recipe = this.props.recipes.find(recipe => recipe.id === id);
+    let text = recipe.text.join(" ")
+    this.setState({
+      editId: id,
+      inputName: recipe.name,
+      inputText: text
     })
-  }
 
-  editRecipe = () => {
-    this.props.recipes.map(recipe => {
-      if (recipe.editMode === true) {
-        id = recipe.id;
-        inputName = recipe.name;
-        inputText = recipe.text.join(" ");
-      }
-    });
-  };
+    this.props.onToggleModal()
+}
 
   handleChange = (id, input) => {
     this.setState(prevState => {
@@ -60,37 +40,23 @@ class RecipeBox extends React.Component {
     });
   };
 
-  modalEditToggle() {
-    this.props.onToggleModal()
-    this.props.recipes.map(recipe => {
-      recipe.editMode === true
-        ? this.props.onToggleEdit(recipe.id)
-        : recipe
-    })
-    this.setState({
-      editmode: false
-    })
-    this.reset()
-  }
-
+  
   onSubmitClick = () => {
     let editmode = this.state.editmode;
     let list = this.state.inputText.split(" ");
     let name = this.state.inputName;
-    if (editmode) {
-      this.props.onEdit(this.state.id, name, list);
+    if (!!this.state.editId) {
+      this.props.onEdit(this.state.editId, name, list);
     } else {
       this.props.onAdd(name, list);
     }
     this.reset()
     this.props.onToggleModal();
-    this.setState({
-      editmode: false
-    })
   };
 
   reset() {
     this.setState({
+      editId: undefined,
       inputText: undefined,
       inputName: undefined
     })
@@ -99,7 +65,7 @@ class RecipeBox extends React.Component {
   render() {
     let modalShow = this.props.modal.modalShow;
     let modal = modalShow ? (
-      <Modal onClose={this.modalEditToggle} title="New Recipe">
+      <Modal onClose={this.props.onToggleModal} title="New Recipe">
         <form>
           <Input
             id="inputName"
@@ -123,14 +89,11 @@ class RecipeBox extends React.Component {
         <div className="container">
           {this.props.recipes.map((item, index) => {
             return (
-              <Recipe
+              <RecipeContainer
                 {...item}
                 id={item.id}
                 key={item.id}
-                onDelete={this.props.onDelete}
-                onToggleEdit={this.props.onToggleEdit}
-                toggleList={this.props.onToggleList}
-                toggleModal={this.props.onToggleModal}
+                onEdit={this.editRecipe}
               />
             );
           })}

@@ -1,22 +1,29 @@
-
 .recipebox {
-    background: rgb(204, 204, 240);
-    height: 1000px;
-    left: -5%;
-    margin: 0 auto;
-    position: relative;
-    width: 110%;
+  height: 1000px;
+  left: -5%;
+  position: relative;
+  width: 110%;
 
-    .container {
-        margin: 0 auto;
-        padding-top: 50px;
-        width: 300px;
+  .container {
+    margin-left: 100px;
+    margin-top: 25px;
+    width: 50%;
+  }
+
+  form {
+    width: 300px;
+  }
+
+  .recipe {
+    height: auto;
+    padding-bottom: 10px;
+
+    .ingredients {
+      border: 1px solid black;
+      height: auto;
+      margin-left: 15px;
+      position: relative;
+      opacity: 1;
     }
-
-
-
-    form {
-        margin: 0 auto;
-        width:300px;
-    }
+  }
 }

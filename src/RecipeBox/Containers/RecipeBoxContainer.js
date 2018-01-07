@@ -9,11 +9,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = ({
-  onToggleEdit: actions.toggleRecipeEdit,
   onToggleModal: actions.toggleModal,
-  onToggleList: actions.toggleRecipe,
   onAdd: actions.addRecipe,
-  onDelete: actions.deleteRecipe,
   onEdit: actions.editRecipe,
 })
 

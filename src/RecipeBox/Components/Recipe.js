@@ -1,31 +1,35 @@
-import React from 'react'
-import * as actions from '../Actions'
-import Button from '../../Universal-Components/Components/Button'
+import React from "react";
+import * as actions from "../Actions";
+import { connect } from 'react-redux'
+import Button from "../../Universal-Components/Components/Button";
 
-require('../Style/Recipe.scss')
-
-const Recipe = ({ id, isOpen, name, onDelete, text, onToggleEdit, toggleList, toggleModal }) => {
-  const onEditClick = (id) => {
-    onToggleEdit(id),
-    toggleModal()
-  }
-  let textMap = isOpen
-    ? <div>
+const Recipe = ({ id, isOpen, name, text, onDelete, onEdit, onToggleList }) => {
+  let textMap = isOpen ? (
+    <div className="ingredients">
       {text.map((item, index) => <div key={index}>{item}</div>)}
-      <Button onClick={() => onEditClick(id)} id="Edit" />
+      <Button onClick={() => onEdit(id)} id="Edit" />
       <Button onClick={() => onDelete(id)} id="Delete" />
     </div>
-    : null
+  ) : null;
   return (
     <div className="recipe">
       <div className="id">
-        <a href="#" onClick={() => toggleList(id)} >{name || "???"}</a>
+        <a href="#" onClick={() => onToggleList(id)}>
+          {name || "???"}
+        </a>
       </div>
-      <div className="ingredients" >
-        {textMap}
-      </div>
-    </div >
-  )
-}
+      <div >{textMap}</div>
+    </div>
+  );
+};
 
-export default Recipe
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = {
+  onToggleList: actions.toggleRecipe,
+  onDelete: actions.deleteRecipe,
+};
+
+const RecipeContainer = connect(mapStateToProps, mapDispatchToProps)(Recipe);
+
+export default RecipeContainer;

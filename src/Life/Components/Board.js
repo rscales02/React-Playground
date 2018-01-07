@@ -1,116 +1,253 @@
-import React from 'react'
-import Square from './Square'
-import Timer from './Timer'
-import Button from '../../Universal-Components/Components/Button'
-
-require('../Style/Board.scss')
+import React from "react";
+import Square from "./Square";
+import Timer from "./Timer";
+import Button from "../../Universal-Components/Components/Button";
 
 export default class Board extends React.Component {
   constructor(props) {
-    super(props)
-    this.onTimerTick = this.onTimerTick.bind(this)
-    this.onSquareClick = this.onSquareClick.bind(this)
-    this.reset = this.reset.bind(this)
-
-    let squares = []
-    for (let index = 0; index < this.props.numSquares; index++) {
-      squares.push({ value: Math.floor(Math.random() * 100) % 2 })
-    }
-
+    super(props);
     this.state = {
-      generation: null,
-      squares
-    }
+      generation: 1,
+      cells: this.genMap()
+    };
   }
 
-  checkNeighbors() {
-    let squares = this.state.squares
-    const width = Math.sqrt(squares.length)
+  checkBottom = (prevState, row, cell) => {
+    let rowBottom = row + 1 == this.props.numRows ? 0 : row + 1;
+    let life = prevState.cells[rowBottom].cells[cell].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
 
+  checkBottomLeft = (prevState, row, cell) => {
+    let rowBottom = row + 1 == this.props.numRows ? 0 : row + 1;
+    let cellLeft = cell - 1 < 0 ? this.props.numCols - 1 : cell - 1;
+    let life = prevState.cells[rowBottom].cells[cellLeft].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
 
-    //Any live cell with fewer than two live neighbours dies, as if caused by underpopulation
-    for (let index = 0; index < squares.length; index++) {
-      const element = squares[index];
-      const topLeft = index - width - 1 < 0 ? index - width - 1 + squares.length : index - width - 1
-      const top = index - width < 0 ? index - width + squares.length : index - width
-      const topRight = index - width + 1 < 0 ? index - width + 1 + squares.length : index - width + 1
-      const left = index - 1 < 0 ? index - 1 + squares.length : index - 1
-      const right = index + 1 > squares.length - 1 ? index + 1 - squares.length : index + 1
-      const bottomLeft = index + width - 1 > squares.length - 1 ? index + width - 1 - squares.length : index + width - 1
-      const bottom = index + width > squares.length - 1 ? index + width - squares.length : index + width
-      const bottomRight = index + width + 1 > squares.length - 1 ? index + width + 1 - squares.length : index + width + 1
-      const neighbors = [squares[topLeft], squares[top], squares[topRight], squares[left], squares[right], squares[bottomLeft], squares[bottom], squares[bottomRight]]
-      let score = 0
-      neighbors.map((item, index) => {
-        if (item.value !== 0) {
-          score++
-        }
-      })
+  checkBottomRight = (prevState, row, cell) => {
+    let rowBottom = row + 1 == this.props.numRows ? 0 : row + 1;
+    let cellRight = cell + 1 == this.props.numCols ? 0 : cell + 1;
+    let life = prevState.cells[rowBottom].cells[cellRight].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
 
-      if (element.value != 0) {
-        if (score < 2) {
-          element.value = 0
-        }
-        //Any live cell with two or three live neighbours lives on to the next generation
-        else if (score === 2 || score === 3) {
-          if (element.value == 1 || element.value == 2) {
-            element.value = 2
+  checkLeft = (prevState, row, cell) => {
+    let cellLeft = cell - 1 < 0 ? this.props.numCols - 1 : cell - 1;
+    let life = prevState.cells[row].cells[cellLeft].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
+
+  checkNeighbors = (prevState, row, cell) => {
+    let bottom = this.checkBottom(prevState, row, cell);
+    let bottomLeft = this.checkBottomLeft(prevState, row, cell);
+    let bottomRight = this.checkBottomRight(prevState, row, cell);
+    let left = this.checkLeft(prevState, row, cell);
+    let right = this.checkRight(prevState, row, cell);
+    let top = this.checkTop(prevState, row, cell);
+    let topLeft = this.checkTopLeft(prevState, row, cell);
+    let topRight = this.checkTopRight(prevState, row, cell);
+    let neighbors = [
+      top,
+      right,
+      left,
+      bottom,
+      topRight,
+      topLeft,
+      bottomRight,
+      bottomLeft
+    ];
+    let score = 0;
+
+    for (let i = 0; i < neighbors.length; i++) {
+      const el = neighbors[i];
+      if (el != 0) {
+        score++;
+      }
+    }
+    return score;
+  };
+
+  checkRight = (prevState, row, cell) => {
+    let cellRight = cell + 1 == this.props.numCols ? 0 : cell + 1;
+    let life = prevState.cells[row].cells[cellRight].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
+
+  checkTop = (prevState, row, cell) => {
+    let rowTop = row - 1 < 0 ? this.props.numRows - 1 : row - 1;
+    let life = prevState.cells[rowTop].cells[cell].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
+  checkTopLeft = (prevState, row, cell) => {
+    let rowTop = row - 1 < 0 ? this.props.numRows - 1 : row - 1;
+    let cellLeft = cell - 1 < 0 ? this.props.numCols - 1 : cell - 1;
+    let life = prevState.cells[rowTop].cells[cellLeft].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
+  checkTopRight = (prevState, row, cell) => {
+    let rowTop = row - 1 < 0 ? this.props.numRows - 1 : row - 1;
+    let cellRight = cell + 1 == this.props.numCols ? 0 : cell + 1;
+    let life = prevState.cells[rowTop].cells[cellRight].life;
+    if (life != 0) {
+      return 1;
+    } else return 0;
+  };
+
+  genMap = () => {
+    let boardMap = [];
+    for (let i = 0; i < this.props.numRows; i++) {
+      let rowId = i;
+      let cells = [];
+      for (let j = 0; j < this.props.numCols; j++) {
+        let cellId = j;
+        cells.push({ cellId: cellId, life: Math.floor(Math.random() * 3) });
+      }
+      boardMap.push({ rowId, cells });
+    }
+    return boardMap;
+  };
+
+  life = () => {
+    this.setState(prevState => {
+      let stateMap = this.state.cells.map(row => {
+        let cellChange = row.cells.map(cell => {
+          switch (this.checkNeighbors(prevState, row.rowId, cell.cellId)) {
+            case 0:
+            case 1:
+              //Any live cell with fewer than two live neighbours dies, as if caused by underpopulation
+              return { ...cell, life: 0 };
+            case 2:
+              //Any live cell with two or three live neighbours lives on to the next generation
+              if (prevState.cells[row.rowId].cells[cell.cellId].life === 1) {
+                return {
+                  ...cell,
+                  life: 2
+                };
+              } else {
+                return {
+                  ...cell,
+                  life: prevState.cells[row.rowId].cells[cell.cellId].life
+                };
+              }
+            case 3:
+              //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+              if (prevState.cells[row.rowId].cells[cell.cellId].life === 0) {
+                return {
+                  ...cell,
+                  life: 1
+                };
+              } else if (
+                prevState.cells[row.rowId].cells[cell.cellId].life === 1
+              ) {
+                return {
+                  ...cell,
+                  life: 2
+                };
+              } else {
+                return {
+                  ...cell,
+                  life: prevState.cells[row.rowId].cells[cell.cellId].life
+                };
+              }
+            default:
+              //Any live cell with more than three live neighbours dies, as if by overpopulation.
+              return { ...cell, life: 0 };
           }
-        }
-        //Any live cell with more than three live neighbours dies, as if by overpopulation.
-        else {
-          element.value = 0
-        }
-      }
-      //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-      else {
-        if (score === 3) {
-          element.value = 1
-        }
-      }
-    }
-    this.setState({ squares })
-  }
+          if (cell.life != 0) {
+            return (cellChange = { ...cell, life: 0 });
+          } else return (cellChange = { ...cell, life: 1 });
+        });
+        return { ...row, cells: cellChange };
+      });
 
-  onSquareClick(id) {
-    this.setState((prevState) => {
-      let squares = prevState.squares
-      if (prevState.squares[id].value !== 0) {
-        squares[id].value = 0
-        return { squares }
-      } else {
-        squares[id].value = 1
-        return { squares }
-      }
-    })
-  }
+      return { cells: stateMap };
+    });
+  };
 
-  onTimerTick(gen) {
-    this.checkNeighbors()
-  }
+  onClick = (rowNum, cellNum) => {
+    let stateMap = this.state.cells.map(row => {
+      if (row.rowId === rowNum) {
+        let cellChange = row.cells.map(cell => {
+          if (cell.cellId === cellNum) {
+            if (cell.life != 0) {
+              return (cellChange = { ...cell, life: 0 });
+            } else return (cellChange = { ...cell, life: 1 });
+          } else return { ...cell };
+        });
+        return { ...row, cells: cellChange };
+      } else return { ...row };
+    });
+    this.setState({
+      cells: stateMap
+    });
+  };
 
-  reset() {
-    this.setState((prevState) => {
-      let squares = prevState.squares
-      squares = squares.map((item, index) => {
-        return item.value = 0
-      })
-      return squares
-    })
-  }
+  onTimerTick = gen => {
+    this.life();
+  };
+
+  reset = () => {
+    let stateMap = this.state.cells.map(row => {
+      let cellChange = row.cells.map(cell => {
+        return (cellChange = { ...cell, life: 0 });
+      });
+      return { ...row, cells: cellChange };
+    });
+    this.setState({
+      cells: stateMap
+    });
+  };
 
   render() {
     return (
-      <div>
-        <Timer onTick={this.onTimerTick} >
-          <Button id="Reset" onClick={this.reset} />
-        </Timer>
-        <div className="board">
-          {this.state.squares.map((item, index) => {
-            return <Square id={index} life={item.value} key={index} onClick={this.onSquareClick} />
+      <table>
+        <thead>
+          <tr>
+            <th colSpan={this.props.numCols}>
+              <Timer onTick={this.life} />
+            </th>
+          </tr>
+        </thead>
+        <tbody className="boardMap">
+          {this.state.cells.map(row => {
+            return (
+              <tr key={row.rowId}>
+                {row.cells.map(cell => {
+                  return (
+                    <Square
+                      rowId={row.rowId}
+                      cellId={cell.cellId}
+                      key={row.rowId + cell.cellId}
+                      life={this.state.cells[row.rowId].cells[cell.cellId].life}
+                      onClick={this.onClick}
+                    />
+                  );
+                })}
+              </tr>
+            );
           })}
-        </div>
-      </div>
-    )
+        </tbody>
+        <tfoot>
+          <tr >
+           <td colSpan={this.props.numCols}> <Button id="Reset" onClick={this.reset} /></td>
+          </tr>
+        </tfoot>
+      </table>
+    );
   }
 }

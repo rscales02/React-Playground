@@ -1,26 +1,18 @@
-import React from 'react'
-import classnames from 'classnames'
-require("../Style/Square.scss");
+import React from "react";
+import classnames from "classnames";
 
-export default class Board extends React.Component {
-  constructor(props) {
-    super(props)
-    this.checkNeighbors = this.checkNeighbors.bind(this)
-  }
+const Square = ({ rowId, cellId, life, onClick }) => {
+  return (
+    <td
+      className={classnames(
+        "square",
+        { limbo: life == 0 },
+        { young: life == 1 },
+        { old: life == 2 }
+      )}
+      onClick={() => onClick(rowId, cellId)}
+    ></td>
+  );
+};
 
-  checkNeighbors() {
-    let id = this.props.id
-    this.props.onClick(id)
-  }
-
-  render() {
-    let state = this.props.life
-    return (
-      <div className={classnames(
-        "square", { limbo: state == 0 }, { young: state == 1 }, { old: state == 2 })}
-        onClick={this.checkNeighbors}
-      >
-      </div>
-    )
-  }
-}
+export default Square;
