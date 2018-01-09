@@ -52,9 +52,9 @@ const modal = (state = { modalShow: false }, action) => {
   }
 };
 
-const recipeReducer = combineReducers({
+const rootReducer = combineReducers({
   modal,
   recipes
 });
 
-export default recipeReducer;
+export default rootReducer;
