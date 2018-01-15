@@ -1,7 +1,8 @@
 import React from "react";
 import classnames from "classnames";
-import * as worldGenerators from './WorldGenerator'
-import * as playerActions from './PlayerActions'
+import * as worldGenerators from "./WorldGenerator";
+import * as playerActions from "./PlayerActions";
+import PlayerStats from "./PlayerStats";
 require("../Style/Dungeon.scss");
 
 class Map extends React.Component {
@@ -23,30 +24,12 @@ class Map extends React.Component {
   };
 
   attackEnemy = enemy => {
-    let health,
-      player = this.state.entities.find(entity => entity.type === "player"),
-      playerHealth = player.health - Math.ceil(Math.random() * enemy.attack);
-    if (playerHealth <= 0) {
-      alert("You lost you fucking loser!");
-      this.resetGame;
-    } else {
-      this.setState(prevState => {
-        let entityMap = prevState.entities.map(entity => {
-          if (entity.type === "player") {
-            return { ...entity, health: playerHealth };
-          } else if (
-            entity.coords[0] === enemy.coords[0] &&
-            entity.coords[1] === enemy.coords[1]
-          ) {
-            health = entity.health - Math.floor(Math.random() * player.attack);
-            if (health <= 0) {
-              return { ...entity, health, coords: [-1, -1] };
-            } else return { ...entity, health };
-          } else return entity;
-        });
-        return {...prevState, entities: entityMap}
-      });
-    }
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        entities: playerActions.attackEnemy(enemy, prevState)
+      };
+    });
   };
 
   engageEntity = coords => {
@@ -71,43 +54,12 @@ class Map extends React.Component {
     } else this.movePlayer(coords);
   };
 
-  
   grabLoot = loot => {
-    let benefit = loot.benefit,
-      entityMap,
-      playerAttribute;
     this.setState(prevState => {
-      switch (loot.contains) {
-        case "health":
-          entityMap = prevState.entities.map(entity => {
-            if (entity.type === "player") {
-              playerAttribute = entity.health;
-              return { ...entity, health: playerAttribute + benefit };
-            } else if (
-              entity.coords[0] === loot.coords[0] &&
-              entity.coords[1] === loot.coords[1]
-            ) {
-              return { ...entity, coords: [-1, -1] };
-            } else return entity;
-          });
-          break;
-        case "attack power":
-          entityMap = prevState.entities.map(entity => {
-            if (entity.type === "player") {
-              playerAttribute = entity.attack;
-              return { ...entity, attack: playerAttribute + benefit };
-            } else if (
-              entity.coords[0] === loot.coords[0] &&
-              entity.coords[1] === loot.coords[1]
-            ) {
-              return { ...entity, coords: [-1, -1] };
-            } else return entity;
-          });
-          break;
-        default:
-          break;
-      }
-      return { ...prevState, entities: entityMap };
+      return {
+        ...prevState,
+        entities: playerActions.grabLoot(loot, prevState)
+      };
     });
   };
 
@@ -159,32 +111,27 @@ class Map extends React.Component {
 
   movePlayer = coords => {
     this.setState(prevState => {
-      let entityMap = prevState.entities.map(entity => {
-        if (entity.type === "player") {
-          return { ...entity, coords };
-        } else return entity;
-      });
       return {
         ...prevState,
-        entities: entityMap
+        entities: playerActions.movePlayer(coords, prevState)
       };
     });
   };
 
   resetGame = () => {
     this.setState({
-      gameMap: this.genMap(30, 50),
-      entities: this.genEntities()
+      gameMap: worldGenerators.genMap(),
+      entities: worldGenerators.genEntities()
     });
   };
 
   render() {
     return (
       <div className="dungeon">
-        <h2>Player Stats</h2>
+        <PlayerStats entities={this.state.entities} />
         {this.state.gameMap.map(row => {
           return (
-            <div key={row.rowId}>
+            <div key={row.rowId} className='row' >
               {row.cells.map(cell => {
                 let cellContents = this.state.entities.map(entity => {
                   if (

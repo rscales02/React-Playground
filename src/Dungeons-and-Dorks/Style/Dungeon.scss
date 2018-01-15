@@ -1,7 +1,11 @@
 
   .dungeon {
     border: 1px solid salmon;
-    
+
+    .cell {
+      border: 1px solid black;
+      padding-left: 10px;
+    }
 
     .enemy {
       background: red;
@@ -15,11 +19,12 @@
       background: blue
     }
 
-    .cell {
-      border: 1px solid black;
-      min-height: 5px;
-      padding-left: 10px;
-      width: 5px;
+    .row {
+      height: 10px
+    }
+
+    .stats {
+      padding-left: 4%
     }
 
     .wall {
