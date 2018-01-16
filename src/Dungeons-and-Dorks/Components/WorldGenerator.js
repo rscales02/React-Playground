@@ -126,7 +126,6 @@ const emptyTop = (coords, matrix) => {
 
 const insertNewFeature = (matrix, coords, nextFeature) => {
   const endCoords = findEndCoords(matrix, coords, nextFeature)
-
   
   let newMatrix = matrix.map(row => {
     if (row.rowId >= coords[1] && row.rowId <= endCoords[1]) {
