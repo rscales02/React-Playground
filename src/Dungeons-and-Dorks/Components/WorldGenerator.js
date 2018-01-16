@@ -47,7 +47,6 @@ export const genMap = () => {
 const insertFeatures = (mapMatrix, coords = [15, 15], recursions = 2) => {
   const nextFeature =
     mapFeatures[Math.floor(Math.random() * mapFeatures.length)];
-  
 
   let newMatrix = insertNewFeature(mapMatrix, coords, nextFeature)
   
@@ -126,14 +125,15 @@ const emptyTop = (coords, matrix) => {
 };
 
 const insertNewFeature = (matrix, coords, nextFeature) => {
-  const endPointX = coords[0] + nextFeature.dimensions[0];
-  const endPointY = coords[1] + nextFeature.dimensions[1];
+  const endCoords = findEndCoords(matrix, coords, nextFeature)
+
+  
   let newMatrix = matrix.map(row => {
-    if (row.rowId >= coords[1] && row.rowId <= endPointY) {
+    if (row.rowId >= coords[1] && row.rowId <= endCoords[1]) {
       let cells = row.cells.map(cell => {
         if (
           cell.cellId >= coords[0] &&
-          cell.cellId <= endPointX &&
+          cell.cellId <= endCoords[0] &&
           cell.contents === 'wall'
         ) {
           return { ...cell, contents: null };
@@ -143,6 +143,28 @@ const insertNewFeature = (matrix, coords, nextFeature) => {
     } else return row;
   });
   return newMatrix
+}
+
+const findEndCoords = (matrix, coords, newfeature) => {
+  const endPointX = coords[0] + nextFeature.dimensions[0];
+  const endPointY = coords[1] + nextFeature.dimensions[1];
+
+  let isCellAvailable = []
+
+  for (let i = coords[1]; i < endPointY; i++) {
+    const row = matrix[i];
+    for (let j = coords[0]; j < endPointX; j++) {
+      const cell = row.cells[j];
+      if (cell.contents === 'wall') {
+        isCellAvailable.push(true)
+      } else isCellAvailable.push(false)
+    }
+  }
+
+  for (let k = 0; k < isCellAvailable.length; k++) {
+    const el = isCellAvailable[k];
+    
+  }
 }
 
 const mapFeatures = [
