@@ -1,16 +1,16 @@
 import React from 'react'
-// import Markdown from '../Markdown/Markdown';
-// import LeaderBoard from '../LeaderBoard/Components/LeaderBoard'
-// import RecipeBoxApp from '../RecipeBox/Components/RecipeBoxApp'
-// import Life from '../Life/Components/Life'
-import Dungeon from '../Dungeons-and-Dorks/Components/Dungeon'
-/* import Example from '../Example/Example' */
+import Markdown from '../Markdown/Markdown';
+import LeaderBoard from '../LeaderBoard/Components/LeaderBoard'
+import RecipeBoxApp from '../RecipeBox/Components/RecipeBoxApp'
+import Life from '../Life/Components/Life'
+// import Dungeon from '../Dungeons-and-Dorks/Components/Dungeon'
+import TravelApp from '../WikiTravelApp/TravelApp'
 
 export default class Switcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 'Dungeon'
+            id: 'Life'
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
@@ -23,22 +23,22 @@ export default class Switcher extends React.Component {
 
     render() {
         let pageMap = {
-            // "LeaderBoard": <LeaderBoard />,
-            // "Markdown": <Markdown />,
-            // "RecipeBox": <RecipeBoxApp />,
-            // "Life": <Life />,
-            "Dungeon": <Dungeon />,
-            /* "Example": <Example /> */
+            "LeaderBoard": <LeaderBoard />,
+            "Markdown": <Markdown />,
+            "RecipeBox": <RecipeBoxApp />,
+            "Life": <Life />,
+            // "Dungeon": <Dungeon />,
+            "TravelApp": <TravelApp />
         }
         let selectedComponent = pageMap[this.state.id]
         return (
             <div>
-                {/* <button href="#" id="LeaderBoard" onClick={this.handleSwitch}>Leader Board</button> */}
-                {/* <button href="#" id="Markdown" onClick={this.handleSwitch}>Markdown</button> */}
-                {/* <button href="#" id="RecipeBox" onClick={this.handleSwitch}>Recipe Box</button>  */}
-                {/* <button href="#" id="Life" onClick={this.handleSwitch}>Life</button> */}
+                <button href="#" id="LeaderBoard" onClick={this.handleSwitch}>Leader Board</button> 
+                <button href="#" id="Markdown" onClick={this.handleSwitch}>Markdown</button>
+                <button href="#" id="RecipeBox" onClick={this.handleSwitch}>Recipe Box</button> 
+                <button href="#" id="Life" onClick={this.handleSwitch}>Life</button>
                 {/* <button href="#" id="Dungeon" onClick={this.handleSwitch}>Dungeon</button> */}
-                {/* <button href="#" id="Example" onClick={this.handleSwitch}>Example</button> */}
+                <button href="#" id="TravelApp" onClick={this.handleSwitch}>Travel App</button>
                 <div id="mount">{selectedComponent}</div>
             </div>
         )

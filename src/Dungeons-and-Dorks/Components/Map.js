@@ -129,13 +129,13 @@ class Map extends React.Component {
     return (
       <div className="dungeon">
         <PlayerStats entities={this.state.entities} />
-        {this.state.gameMap.map(row => {
+        {this.state.gameMap.map((row, i) => {
           return (
-            <div key={row.rowId} className='row' >
+            <div key={i} className='row' >
               {row.cells.map(cell => {
                 let cellContents = this.state.entities.map(entity => {
                   if (
-                    entity.coords[1] === row.rowId &&
+                    entity.coords[1] === i &&
                     entity.coords[0] === cell.cellId
                   ) {
                     let type = entity.type;
@@ -145,7 +145,7 @@ class Map extends React.Component {
                 let cellDisplay = [
                   "cell",
                   {
-                    wall: this.state.gameMap[row.rowId].cells[cell.cellId]
+                    wall: this.state.gameMap[i].cells[cell.cellId]
                       .contents
                   },
                   cellContents

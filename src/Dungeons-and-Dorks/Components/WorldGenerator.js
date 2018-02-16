@@ -38,18 +38,18 @@ export const genMap = () => {
     for (let j = 0; j < width; j++) {
       row.push({ cellId: j, contents: 'wall' });
     }
-    mapMatrix.push({ rowId: i, cells: row });
+    mapMatrix.push(row);
   }
   let featuredMatrix = insertFeatures(mapMatrix);
   return featuredMatrix;
 };
 
-const insertFeatures = (mapMatrix, coords = [15, 15], recursions = 2) => {
+const insertFeatures = (mapMatrix, coords = [15, 15], recursions = 5) => {
   const nextFeature =
     mapFeatures[Math.floor(Math.random() * mapFeatures.length)];
 
   let newMatrix = insertNewFeature(mapMatrix, coords, nextFeature)
-  
+
   if (recursions >= 0) {
     let startCoordsOptions = [];
     for (let i = 0; i < newMatrix.length; i++) {
@@ -124,44 +124,31 @@ const emptyTop = (coords, matrix) => {
   } else return false;
 };
 
-const insertNewFeature = (matrix, coords, nextFeature) => {
-  const endCoords = findEndCoords(matrix, coords, nextFeature)
-  
-  let newMatrix = matrix.map(row => {
-    if (row.rowId >= coords[1] && row.rowId <= endCoords[1]) {
-      let cells = row.cells.map(cell => {
-        if (
-          cell.cellId >= coords[0] &&
-          cell.cellId <= endCoords[0] &&
-          cell.contents === 'wall'
-        ) {
-          return { ...cell, contents: null };
-        } else return cell;
-      });
-      return { ...row, cells: cells };
-    } else return row;
-  });
-  return newMatrix
+const insertNewFeature = (matrix, startCoords, nextFeature) => {
+  const endCoords = findEndCoords(matrix, startCoords, endCoords)
+  if (endCoords) {
+    let newMatrix = matrix.map((row, i) => {
+      if (i >= startCoords[1] && i <= endCoords[1]) {
+        let cells = row.cells.map(cell => {
+          if (
+            cell.cellId >= startCoords[0] &&
+            cell.cellId <= endCoords[0] &&
+            cell.contents === 'wall'
+          ) {
+            return { ...cell, contents: null };
+          } else return cell;
+        });
+        return { ...row, cells: cells };
+      } else return row;
+    });
+    return newMatrix
+  } else return matrix
 }
 
-const findEndCoords = (matrix, coords, newfeature) => {
-  const endPointX = coords[0] + nextFeature.dimensions[0];
-  const endPointY = coords[1] + nextFeature.dimensions[1];
+const findEndCoords = (matrix, startCoords, nextFeature) => {
+  let endCoords = [startCoords[0] + nextFeature.dimensions[0], startCoords[1] + nextFeature[1]]
 
-  let isCellAvailable = []
-
-  for (let i = coords[1]; i < endPointY; i++) {
-    const row = matrix[i];
-    for (let j = coords[0]; j < endPointX; j++) {
-      const cell = row.cells[j];
-      if (cell.contents === 'wall') {
-        isCellAvailable.push(true)
-      } else isCellAvailable.push(false)
-    }
-  }
-
-  for (let k = 0; k < isCellAvailable.length; k++) {
-    const el = isCellAvailable[k];
+  if (endCoords[0] < 0 || endCoords[0] >= matrix[0].cells.length) {
     
   }
 }
