@@ -10,7 +10,7 @@ export default class Switcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 'Life'
+            id: 'TravelApp'
         }
         this.handleSwitch = this.handleSwitch.bind(this)
     }
